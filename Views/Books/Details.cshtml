@@ -1,0 +1,13 @@
+﻿@model Book?
+
+<h1>This is your book!</h1>
+
+@if(Model != null)
+{
+    <h2>@Model.Title</h2>
+    <h3>@Model.Description</h3>
+}
+else
+{
+    <h2>BOOK NOT FOUND</h2>
+}
