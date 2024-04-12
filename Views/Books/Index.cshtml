@@ -8,6 +8,7 @@
         <tr>
             <th>Id</th>
             <th>Title</th>
+            <th>Author</th>
             <th>Links</th>
         </tr>
     </thead>
@@ -17,6 +18,7 @@
             <tr>
                 <td>@b.Id</td>
                 <td>@b.Title</td>
+                <td>@b.Author.Name</td>
                 <td>
                     <a asp-controller="Books"
                     asp-action="Details"

@@ -4,6 +4,7 @@ using IntroToIdentity.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntroToIdentity.Controllers
 {
@@ -22,7 +23,9 @@ namespace IntroToIdentity.Controllers
 
         public IActionResult Index()
         {
-            var books = _context.Books.ToList();
+            var books = _context.Books
+                .Include(b => b.Author)
+                .ToList();
 
             ApplicationUser? user = GetUser();
 

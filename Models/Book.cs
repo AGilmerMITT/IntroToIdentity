@@ -9,8 +9,10 @@
 
         // FK props
         public string? CurrentApplicationUserId { get; set; }
+        public int AuthorId { get; set; }
 
         // Nav props
         public virtual ApplicationUser? CurrentApplicationUser { get; set; }
+        public virtual Author Author { get; set; }
     }
 }
