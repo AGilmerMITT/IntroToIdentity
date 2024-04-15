@@ -1,4 +1,5 @@
 ﻿using IntroToIdentity.Models;
+using IntroToIdentity.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,14 @@ namespace IntroToIdentity.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public AdminController(UserManager<ApplicationUser> um)
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public AdminController(
+            UserManager<ApplicationUser> um,
+            RoleManager<IdentityRole> rm)
         {
             _userManager = um;
+            _roleManager = rm;
         }
     
         public IActionResult Index()
@@ -49,6 +55,28 @@ namespace IntroToIdentity.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReviewUsers()
+        {
+            ReviewUsersViewModel vm = new()
+            {
+                Roles = _roleManager.Roles.Select(r => r.Name).ToList()!
+            };
+
+            foreach (var user in _userManager.Users)
+            {
+                vm.Members.Add(
+                    new ReviewUsersViewModel.Member()
+                    {
+                        Name = user.UserName ?? "no user name",
+                        Roles = (await _userManager.GetRolesAsync(user)).ToHashSet()
+                    }
+                    );
+            }
+
+            return View(vm);
         }
 
         // Extend SeedData to also create the Librarian role

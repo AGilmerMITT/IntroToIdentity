@@ -16,6 +16,7 @@ namespace IntroToIdentity.Data
                 (serviceProvider, "your.user@random.com", seedPw);
 
             await SeedRole(serviceProvider, adminId, Constants.AdminRole);
+            await AddRoles(serviceProvider, Constants.LibrarianRole);
         }
 
         public static async Task<string> SeedUser
@@ -67,6 +68,17 @@ namespace IntroToIdentity.Data
                 .AddToRoleAsync(user, role);
 
             return result;
+        }
+
+        public static async Task AddRoles(IServiceProvider serviceProvider, params string[] roles)
+        {
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+
+            foreach(string role in roles)
+            {
+                if (!await roleManager!.RoleExistsAsync(role))
+                    await roleManager!.CreateAsync(new IdentityRole(role));
+            }
         }
     }
 }

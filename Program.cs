@@ -33,6 +33,8 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 
     string? seedUserPassword = builder.Configuration["SeedUserPW"];
+
+    await SeedData.Initialize(services, seedUserPassword);
 }
 
 // Configure the HTTP request pipeline.

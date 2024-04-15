@@ -1,0 +1,53 @@
+﻿@model IntroToIdentity.Models.ViewModels.ReviewUsersViewModel
+
+<h1>Review user roles</h1>
+@if(Model == null)
+{
+    <h2>Error: null data model</h2>
+    return;
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                User
+            </th>
+            @foreach (string role in Model.Roles)
+            {
+                <th>
+                    @role
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Members)
+        {
+            <tr>
+                <td>
+                    @user.Name
+                </td>
+            @foreach (string role in Model.Roles)
+            {
+                    @if (user.Roles.Contains(role))
+                    {
+                        <td style="background-color:green">
+                            <a asp-controller="Admin" asp-action="ToggleRole" asp-route-role="@role" asp-route-user="@user.Name">
+                                Yes
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="background-color:palevioletred">
+                            <a asp-controller="Admin" asp-action="ToggleRole" asp-route-role="@role" asp-route-user="@user.Name">
+                                No
+                            </a>
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>
